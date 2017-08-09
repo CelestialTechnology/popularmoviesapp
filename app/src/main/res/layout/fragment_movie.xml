@@ -1,0 +1,46 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/sort_movies_by"
+            android:id="@+id/sort_by"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="center_vertical"
+            android:textStyle="bold"
+            android:textSize="20dp"
+            android:layout_margin="20dp" />
+
+        <Spinner xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="center_vertical"
+            android:spinnerMode="dropdown" />
+
+    </LinearLayout>
+
+
+    <GridView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/movies_grid"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:columnWidth="150dp"
+        android:gravity="center"
+        android:horizontalSpacing="5dp"
+        android:numColumns="auto_fit"
+        android:stretchMode="columnWidth"
+        android:verticalSpacing="5dp"
+        tools:context=".MovieFragment" />
+
+</LinearLayout>
