@@ -4,7 +4,7 @@ package com.example.alexander.popularmoviesapp.moviedata;
  * Created by awest on 8/11/2017.
  */
 
-public class Trailer {
+public class Trailer implements JsonDataType {
     private String name;
     private String urlKey;
     private String type;
@@ -25,5 +25,10 @@ public class Trailer {
 
     public String getType() {
         return type;
+    }
+
+    @Override
+    public String getJsonDataType() {
+        return "Trailer";
     }
 }

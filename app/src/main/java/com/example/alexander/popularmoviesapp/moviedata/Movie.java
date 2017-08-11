@@ -6,7 +6,7 @@ import android.os.Parcelable;
 /**
  * Created by Alexander on 6/16/2016.
  */
-public class Movie implements Parcelable {
+public class Movie implements Parcelable, JsonDataType {
     private String title;
     private String imageUrl = "http://image.tmdb.org/t/p/w342";
     private String backgroundImageUrl = "http://image.tmdb.org/t/p/w780";
@@ -99,4 +99,9 @@ public class Movie implements Parcelable {
             return new Movie[size];
         }
     };
+
+    @Override
+    public String getJsonDataType() {
+        return "Movie";
+    }
 }

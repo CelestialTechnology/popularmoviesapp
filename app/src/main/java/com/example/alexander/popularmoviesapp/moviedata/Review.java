@@ -4,7 +4,7 @@ package com.example.alexander.popularmoviesapp.moviedata;
  * Created by awest on 8/11/2017.
  */
 
-public class Review {
+public class Review implements JsonDataType {
     private String author;
     private String content;
 
@@ -19,5 +19,10 @@ public class Review {
 
     public String getContent() {
         return content;
+    }
+
+    @Override
+    public String getJsonDataType() {
+        return "Review";
     }
 }
