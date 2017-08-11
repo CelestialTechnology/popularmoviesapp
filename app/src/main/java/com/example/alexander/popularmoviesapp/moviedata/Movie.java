@@ -7,6 +7,7 @@ import android.os.Parcelable;
  * Created by Alexander on 6/16/2016.
  */
 public class Movie implements Parcelable, JsonDataType {
+    private String id;
     private String title;
     private String imageUrl = "http://image.tmdb.org/t/p/w342";
     private String backgroundImageUrl = "http://image.tmdb.org/t/p/w780";
@@ -14,7 +15,8 @@ public class Movie implements Parcelable, JsonDataType {
     private double userRating;
     private String releaseDate;
 
-    public Movie(String title, String imageUrl, String backgroundImageUrl, String synopsis, double userRating, String releaseDate) {
+    public Movie(String id, String title, String imageUrl, String backgroundImageUrl, String synopsis, double userRating, String releaseDate) {
+        this.id = id;
         this.title = title;
         this.imageUrl += imageUrl;
         this.backgroundImageUrl += backgroundImageUrl;
@@ -24,6 +26,10 @@ public class Movie implements Parcelable, JsonDataType {
     }
 
     //region Getters
+    public String getId() {
+        return id;
+    }
+
     public String getTitle() {
         return title;
     }
@@ -53,6 +59,7 @@ public class Movie implements Parcelable, JsonDataType {
     // is that it reads in the object information stored in the
     // parcel when it needs to be accessed?
     private Movie(Parcel in) {
+        id = in.readString();
         title = in.readString();
         imageUrl = in.readString();
         backgroundImageUrl = in.readString();
@@ -64,7 +71,8 @@ public class Movie implements Parcelable, JsonDataType {
     @Override
     public String toString() {
         return "Movie{" +
-                "title='" + title + '\'' +
+                "id='" + id + '\'' +
+                ", title='" + title + '\'' +
                 ", imageUrl='" + imageUrl + '\'' +
                 ", backgroundImageUrl='" + backgroundImageUrl + '\'' +
                 ", synopsis='" + synopsis + '\'' +
@@ -80,6 +88,7 @@ public class Movie implements Parcelable, JsonDataType {
 
     @Override
     public void writeToParcel(Parcel parcel, int flags) {
+        parcel.writeString(id);
         parcel.writeString(title);
         parcel.writeString(imageUrl);
         parcel.writeString(backgroundImageUrl);

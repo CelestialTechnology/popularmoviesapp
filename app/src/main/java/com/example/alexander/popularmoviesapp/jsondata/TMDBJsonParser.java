@@ -57,6 +57,7 @@ public class TMDBJsonParser {
 
     private static ArrayList<Movie> extractDesiredFields(JSONArray resultsArray) {
 
+        final String TMDB_ID = "id";
         final String TMDB_TITLE = "title";
         final String TMDB_POSTER_PATH = "poster_path";
         final String TMDB_BACKDROP_PATH = "backdrop_path";
@@ -72,6 +73,7 @@ public class TMDBJsonParser {
                 JSONObject currentMovie = resultsArray.getJSONObject(i);
 
                 movies.add(new Movie(
+                        currentMovie.getString(TMDB_ID),
                         currentMovie.getString(TMDB_TITLE),
                         currentMovie.getString(TMDB_POSTER_PATH),
                         currentMovie.getString(TMDB_BACKDROP_PATH),
