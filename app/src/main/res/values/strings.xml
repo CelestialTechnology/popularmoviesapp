@@ -20,4 +20,7 @@
         The minions are a nice idea and the animation and London recreation is really good,
         but that's about it.\n\nThe script is boring and the jokes not really funny.
     </string>
+
+    <!-- Example text for the Trailer list item -->
+    <string name="trailer_type">Official Release Trailer</string>
 </resources>
