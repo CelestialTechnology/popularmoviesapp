@@ -13,4 +13,11 @@
     </string>
     <string name="detail_vote_average">6.4</string>
     <string name="detail_release_date">2015-06-17</string>
+
+    <!-- Example text for the review list item -->
+    <string name="review_author">Andres Gomez</string>
+    <string name="review_content">
+        The minions are a nice idea and the animation and London recreation is really good,
+        but that's about it.\n\nThe script is boring and the jokes not really funny.
+    </string>
 </resources>
