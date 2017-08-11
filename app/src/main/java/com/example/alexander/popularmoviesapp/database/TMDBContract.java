@@ -13,6 +13,8 @@ public class TMDBContract {
 
     public static class FavoriteMovieEntry implements BaseColumns {
 
+        public static final String TABLE_NAME = "FavoriteMovieEntry";
+
         public static final String COLUMN_MOVIE_ID = "movie_id";
         public static final String COLUMN_MOVIE_TITLE = "title";
 
