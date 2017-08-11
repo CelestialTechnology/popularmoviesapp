@@ -27,6 +27,11 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.alexander.popularmoviesapp.MainActivity" />
         </activity>
+
+        <provider
+            android:authorities="com.example.alexander.popularmoviesapp.provider"
+            android:name="com.example.alexander.popularmoviesapp.database.TMDBProvider"
+            android:exported="false" />
     </application>
 
 </manifest>

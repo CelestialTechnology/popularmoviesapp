@@ -2,6 +2,7 @@ package com.example.alexander.popularmoviesapp.database;
 
 import android.content.ContentProvider;
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.support.annotation.NonNull;
@@ -12,9 +13,18 @@ import android.support.annotation.Nullable;
  */
 
 public class TMDBProvider extends ContentProvider {
+
+    private TMDBHelper tmdbHelper;
+
+    // Necessary Uris:
+    // Get all stored movies
+    // Get One stored movie
+
     @Override
     public boolean onCreate() {
-        return false;
+        Context context = getContext();
+        tmdbHelper = new TMDBHelper(context);
+        return true;
     }
 
     @Nullable
