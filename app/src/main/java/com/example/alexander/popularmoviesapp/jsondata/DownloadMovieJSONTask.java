@@ -1,10 +1,10 @@
-package com.example.alexander.popularmoviesapp.data;
+package com.example.alexander.popularmoviesapp.jsondata;
 
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 
-import com.example.alexander.popularmoviesapp.Movie;
+import com.example.alexander.popularmoviesapp.moviedata.Movie;
 import com.example.alexander.popularmoviesapp.utils.NetworkUtility;
 
 import org.json.JSONException;

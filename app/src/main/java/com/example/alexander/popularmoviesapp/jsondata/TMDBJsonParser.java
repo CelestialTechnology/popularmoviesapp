@@ -1,10 +1,10 @@
-package com.example.alexander.popularmoviesapp.data;
+package com.example.alexander.popularmoviesapp.jsondata;
 
 import android.net.Uri;
 import android.util.Log;
 
 import com.example.alexander.popularmoviesapp.BuildConfig;
-import com.example.alexander.popularmoviesapp.Movie;
+import com.example.alexander.popularmoviesapp.moviedata.Movie;
 
 import org.json.JSONArray;
 import org.json.JSONException;

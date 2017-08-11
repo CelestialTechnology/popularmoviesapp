@@ -14,7 +14,8 @@ import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.Spinner;
 
-import com.example.alexander.popularmoviesapp.data.DownloadMovieJSONTask;
+import com.example.alexander.popularmoviesapp.jsondata.DownloadMovieJSONTask;
+import com.example.alexander.popularmoviesapp.moviedata.Movie;
 
 import java.util.ArrayList;
 
