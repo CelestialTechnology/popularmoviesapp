@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.UriMatcher;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -51,7 +52,38 @@ public class TMDBProvider extends ContentProvider {
     @Nullable
     @Override
     public Cursor query(@NonNull Uri uri, @Nullable String[] projection, @Nullable String selection, @Nullable String[] selectionArgs, @Nullable String sortOrder) {
-        return null;
+        Cursor cursor;
+        SQLiteDatabase db = tmdbHelper.getReadableDatabase();
+        switch (sUriMatcher.match(uri)) {
+            case FAVORITE_MOVIES:
+                cursor = db.query(
+                        TMDBContract.FavoriteMovieEntry.TABLE_NAME,
+                        projection,
+                        selection,
+                        selectionArgs,
+                        null,
+                        null,
+                        sortOrder
+                );
+                break;
+            case FAVORITE_MOVIE_WITH_ID:
+                String[] mSelectionArgs = new String[]{uri.getLastPathSegment()};
+                String select = TMDBContract.FavoriteMovieEntry.COLUMN_MOVIE_ID + "=?";
+                cursor = db.query(
+                        TMDBContract.FavoriteMovieEntry.TABLE_NAME,
+                        projection,
+                        select,
+                        mSelectionArgs,
+                        null,
+                        null,
+                        sortOrder
+                );
+                break;
+            default:
+                throw new UnsupportedOperationException("Unsupported Uri: " + uri.toString());
+        }
+        cursor.setNotificationUri(getContext().getContentResolver(), uri);
+        return cursor;
     }
 
     @Nullable
