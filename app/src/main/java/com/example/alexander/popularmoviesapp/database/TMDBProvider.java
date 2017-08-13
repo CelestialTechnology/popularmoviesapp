@@ -150,6 +150,7 @@ public class TMDBProvider extends ContentProvider {
         return rowsDeleted;
     }
 
+    // The delete function is not available for this application in this stage of the project
     @Override
     public int update(@NonNull Uri uri, @Nullable ContentValues values, @Nullable String selection, @Nullable String[] selectionArgs) {
         return 0;
