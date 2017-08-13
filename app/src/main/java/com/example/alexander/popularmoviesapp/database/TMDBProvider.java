@@ -1,6 +1,7 @@
 package com.example.alexander.popularmoviesapp.database;
 
 import android.content.ContentProvider;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.UriMatcher;
@@ -95,7 +96,31 @@ public class TMDBProvider extends ContentProvider {
     @Nullable
     @Override
     public Uri insert(@NonNull Uri uri, @Nullable ContentValues values) {
-        return null;
+        final SQLiteDatabase db = tmdbHelper.getWritableDatabase();
+
+        Uri returnUri;
+        // This application will only insert one favorite movie at a time
+        switch (sUriMatcher.match(uri)) {
+            case FAVORITE_MOVIES:
+                long id = db.insert(
+                        TMDBContract.FavoriteMovieEntry.TABLE_NAME,
+                        null,
+                        values
+                );
+
+                if (id > 0) {
+                    returnUri = ContentUris.withAppendedId(TMDBContract.FavoriteMovieEntry.CONTENT_URI, id);
+                } else {
+                    throw new android.database.SQLException("Failed to insert row into " + uri);
+                }
+                break;
+            default:
+                throw new UnsupportedOperationException("Unsupported Uri: " + uri.toString());
+        }
+
+        getContext().getContentResolver().notifyChange(uri, null);
+
+        return returnUri;
     }
 
     @Override
