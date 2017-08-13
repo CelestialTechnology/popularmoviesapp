@@ -111,7 +111,7 @@ public class TMDBProvider extends ContentProvider {
                 if (id > 0) {
                     returnUri = ContentUris.withAppendedId(TMDBContract.FavoriteMovieEntry.CONTENT_URI, id);
                 } else {
-                    throw new android.database.SQLException("Failed to insert row into " + uri);
+                    throw new android.database.SQLException("Failed to insert movie into " + uri);
                 }
                 break;
             default:
@@ -125,7 +125,29 @@ public class TMDBProvider extends ContentProvider {
 
     @Override
     public int delete(@NonNull Uri uri, @Nullable String selection, @Nullable String[] selectionArgs) {
-        return 0;
+        final SQLiteDatabase db = tmdbHelper.getWritableDatabase();
+        int rowsDeleted;
+        // This will only allow deletion of one movie at a time
+        switch (sUriMatcher.match(uri)) {
+            case FAVORITE_MOVIE_WITH_ID:
+                String[] mSelctionArgs = new String[]{uri.getLastPathSegment()};
+                rowsDeleted = db.delete(
+                        TMDBContract.FavoriteMovieEntry.TABLE_NAME,
+                        TMDBContract.FavoriteMovieEntry.COLUMN_MOVIE_ID + "=?",
+                        mSelctionArgs
+                );
+
+                break;
+            default:
+                throw new UnsupportedOperationException("Unsupported Uri For Deletion: " + uri);
+        }
+        if (rowsDeleted > 0) {
+            getContext().getContentResolver().notifyChange(uri, null);
+        } else {
+            throw new android.database.SQLException("Failure to delete movie in database with uri: " + uri);
+        }
+
+        return rowsDeleted;
     }
 
     @Override
