@@ -1,5 +1,6 @@
 package com.example.alexander.popularmoviesapp.database;
 
+import android.net.Uri;
 import android.provider.BaseColumns;
 
 /**
@@ -11,7 +12,18 @@ public class TMDBContract {
     private TMDBContract() {
     }
 
+    // Define the Base content URI
+    public static final String CONTENT_AUTHORITY = "com.example.alexander.popularmoviesapp";
+
+    public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
+
+    public static final String PATH_FAVORITE_MOVIES = "FavoriteMovieEntry";
+
     public static class FavoriteMovieEntry implements BaseColumns {
+
+        // Uri to obtain all the entries in the table
+        public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon()
+                .appendPath(PATH_FAVORITE_MOVIES).build();
 
         public static final String TABLE_NAME = "FavoriteMovieEntry";
 
