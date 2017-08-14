@@ -9,17 +9,14 @@ import android.os.Parcelable;
 public class Movie implements Parcelable, JsonDataType {
     private String id;
     private String title;
-    private String imageUrl = "http://image.tmdb.org/t/p/w342";
-    private String backgroundImageUrl = "http://image.tmdb.org/t/p/w780";
+
     private String synopsis;
     private double userRating;
     private String releaseDate;
 
-    public Movie(String id, String title, String imageUrl, String backgroundImageUrl, String synopsis, double userRating, String releaseDate) {
+    public Movie(String id, String title, String synopsis, double userRating, String releaseDate) {
         this.id = id;
         this.title = title;
-        this.imageUrl += imageUrl;
-        this.backgroundImageUrl += backgroundImageUrl;
         this.synopsis = synopsis;
         this.userRating = userRating;
         this.releaseDate = releaseDate;
@@ -32,14 +29,6 @@ public class Movie implements Parcelable, JsonDataType {
 
     public String getTitle() {
         return title;
-    }
-
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public String getBackgroundImageUrl() {
-        return backgroundImageUrl;
     }
 
     public String getSynopsis() {
@@ -61,8 +50,6 @@ public class Movie implements Parcelable, JsonDataType {
     private Movie(Parcel in) {
         id = in.readString();
         title = in.readString();
-        imageUrl = in.readString();
-        backgroundImageUrl = in.readString();
         synopsis = in.readString();
         userRating = in.readDouble();
         releaseDate = in.readString();
@@ -73,8 +60,6 @@ public class Movie implements Parcelable, JsonDataType {
         return "Movie{" +
                 "id='" + id + '\'' +
                 ", title='" + title + '\'' +
-                ", imageUrl='" + imageUrl + '\'' +
-                ", backgroundImageUrl='" + backgroundImageUrl + '\'' +
                 ", synopsis='" + synopsis + '\'' +
                 ", userRating=" + userRating +
                 ", releaseDate='" + releaseDate + '\'' +
@@ -90,8 +75,6 @@ public class Movie implements Parcelable, JsonDataType {
     public void writeToParcel(Parcel parcel, int flags) {
         parcel.writeString(id);
         parcel.writeString(title);
-        parcel.writeString(imageUrl);
-        parcel.writeString(backgroundImageUrl);
         parcel.writeString(synopsis);
         parcel.writeDouble(userRating);
         parcel.writeString(releaseDate);
