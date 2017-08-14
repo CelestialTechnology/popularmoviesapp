@@ -1,5 +1,6 @@
 package com.example.alexander.popularmoviesapp.jsondata;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.ArrayAdapter;
@@ -17,6 +18,12 @@ public class DownloadMovieJSONTask extends AsyncTask<String, Void, ArrayList<Mov
 
     private final String LOG_TAG = DownloadMovieJSONTask.class.getSimpleName();
     private ArrayAdapter<Movie> adapter;
+    private Context context;
+
+    public DownloadMovieJSONTask(ArrayAdapter<Movie> adapter, Context context) {
+        this.adapter = adapter;
+        this.context = context;
+    }
 
     @Override
     protected ArrayList<Movie> doInBackground(String... params) {
@@ -42,18 +49,13 @@ public class DownloadMovieJSONTask extends AsyncTask<String, Void, ArrayList<Mov
         super.onPostExecute(result);
     }
 
-    public void setDownloadAdapter(ArrayAdapter<Movie> adapter) {
-        this.adapter = adapter;
-    }
-
-
     private ArrayList<Movie> loadJSONFromNetwork(String urlString) throws IOException {
 
         URL url = TMDBJsonParser.createURL(urlString);
         String downloadedJSONData = NetworkUtility.readInputStream(NetworkUtility.getInputStreamFromURL(url));
 
         try {
-            return TMDBJsonParser.parseDownloadedJSON(downloadedJSONData);
+            return TMDBJsonParser.parseDownloadedJSON(downloadedJSONData, context);
         } catch (JSONException e) {
             Log.d(LOG_TAG, "@loadJSONFromNetwork! JsonParserException: Parse Failed!");
             return null;

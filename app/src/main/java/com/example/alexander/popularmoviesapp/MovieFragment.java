@@ -91,7 +91,7 @@ public class MovieFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent displayMovieDetail = new Intent(getActivity(), MovieDetailActivity.class);
 
-                if (DbMovieUtil.isFavoriteMovie(getActivity(), mMovieAdapter.getItem(position))) {
+                if (DbMovieUtil.isFavoriteMovie(getActivity(), mMovieAdapter.getItem(position).getId())) {
                     DownloadedMovie downloadedMovie = (DownloadedMovie) mMovieAdapter.getItem(position);
                     displayMovieDetail.putExtra("Movie", downloadedMovie);
                 } else {
@@ -121,8 +121,7 @@ public class MovieFragment extends Fragment {
     }
 
     public void downloadMovieData(String sortCriteria) {
-        downloadMovieJSONTask = new DownloadMovieJSONTask();
-        downloadMovieJSONTask.setDownloadAdapter(mMovieAdapter);
+        downloadMovieJSONTask = new DownloadMovieJSONTask(mMovieAdapter, getActivity());
         downloadMovieJSONTask.execute(sortCriteria);
     }
 
