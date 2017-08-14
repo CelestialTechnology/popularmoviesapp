@@ -1,21 +1,18 @@
 package com.example.alexander.popularmoviesapp.jsondata;
 
 import android.content.Context;
-import android.net.Uri;
 import android.util.Log;
 
-import com.example.alexander.popularmoviesapp.BuildConfig;
 import com.example.alexander.popularmoviesapp.moviedata.DownloadedMovie;
 import com.example.alexander.popularmoviesapp.moviedata.Movie;
 import com.example.alexander.popularmoviesapp.moviedata.OnlineMovie;
+import com.example.alexander.popularmoviesapp.moviedata.Trailer;
 import com.example.alexander.popularmoviesapp.utils.DbMovieUtil;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 
 /**
@@ -24,10 +21,6 @@ import java.util.ArrayList;
 public class TMDBJsonParser {
 
     private static final String LOG_TAG = TMDBJsonParser.class.getSimpleName();
-    private static String API_KEY = BuildConfig.TMDB_API_KEY;
-    private static String TMDB_BASE_URL = "https://api.themoviedb.org/3";
-    private static String SORT_QUERY_PATH = "movie/";
-    private static String API_KEY_PARAM = "api_key";
 
 
     /**
@@ -37,29 +30,51 @@ public class TMDBJsonParser {
 
     }
 
-    public static URL createURL(String query) throws MalformedURLException {
-
-        Uri builtUri;
-
-        builtUri = Uri.parse(TMDB_BASE_URL).buildUpon()
-                .appendEncodedPath(SORT_QUERY_PATH + query)
-                .appendQueryParameter(API_KEY_PARAM, API_KEY)
-                .build();
-
-        return new URL(builtUri.toString());
-    }
-
-
-    public static ArrayList<Movie> parseDownloadedJSON(String rawData, Context context) throws JSONException {
+    public static ArrayList<Movie> parseDownloadedMovieJSON(String rawData, Context context) throws JSONException {
         final String TMDB_RESULTS = "results";
 
         JSONObject rawDataJson = new JSONObject(rawData);
         JSONArray rawDataArray = rawDataJson.getJSONArray(TMDB_RESULTS);
 
-        return extractDesiredFields(rawDataArray, context);
+        return extractDesiredMovieFields(rawDataArray, context);
     }
 
-    private static ArrayList<Movie> extractDesiredFields(JSONArray resultsArray, Context context) {
+    public static ArrayList<Trailer> parseDownloadedTrailerJSON(String rawData) throws JSONException {
+        final String TMDB_RESULTS = "results";
+
+        JSONObject rawDataJson = new JSONObject(rawData);
+        JSONArray rawDataArray = rawDataJson.getJSONArray(TMDB_RESULTS);
+
+        return extractDesiredTrailerFields(rawDataArray);
+    }
+
+    private static ArrayList<Trailer> extractDesiredTrailerFields(JSONArray resultArray) {
+        final String TMDB_VIDEO_KEY = "key";
+        final String TMDB_VIDEO_NAME = "name";
+        final String TMDB_VIDEO_TYPE = "type";
+
+        ArrayList<Trailer> trailers = new ArrayList<>();
+        try {
+            for (int i = 0; i < resultArray.length(); i++) {
+                JSONObject currentTrailer = resultArray.getJSONObject(i);
+
+                trailers.add(
+                        new Trailer(
+                                currentTrailer.getString(TMDB_VIDEO_NAME),
+                                currentTrailer.getString(TMDB_VIDEO_KEY),
+                                currentTrailer.getString(TMDB_VIDEO_TYPE))
+                );
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        return trailers;
+    }
+
+
+    private static ArrayList<Movie> extractDesiredMovieFields(JSONArray resultsArray, Context context) {
 
         final String TMDB_ID = "id";
         final String TMDB_TITLE = "title";
@@ -101,7 +116,7 @@ public class TMDBJsonParser {
                 movies.add(movie);
             }
         } catch (JSONException e) {
-            Log.v(LOG_TAG, "Error Parsing Data! @extractDesiredFields()");
+            Log.v(LOG_TAG, "Error Parsing Data! @extractDesiredMovieFields()");
             e.printStackTrace();
             return null;
         }
