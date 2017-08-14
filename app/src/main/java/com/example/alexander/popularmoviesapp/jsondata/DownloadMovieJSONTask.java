@@ -50,11 +50,11 @@ public class DownloadMovieJSONTask extends AsyncTask<String, Void, ArrayList<Mov
 
     private ArrayList<Movie> loadJSONFromNetwork(String urlString) throws IOException {
 
-        URL url = TMDBJsonParser.createURL(urlString);
+        URL url = NetworkUtility.createURL(urlString);
         String downloadedJSONData = NetworkUtility.readInputStream(NetworkUtility.getInputStreamFromURL(url));
 
         try {
-            return TMDBJsonParser.parseDownloadedJSON(downloadedJSONData, context);
+            return TMDBJsonParser.parseDownloadedMovieJSON(downloadedJSONData, context);
         } catch (JSONException e) {
             Log.d(LOG_TAG, "@loadJSONFromNetwork! JsonParserException: Parse Failed!");
             return null;
