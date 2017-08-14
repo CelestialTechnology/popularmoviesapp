@@ -11,8 +11,8 @@
         Minions Stuart, Kevin and Bob are recruited by Scarlet Overkill, a super-villain who,
         alongside her inventor husband Herb, hatches a plot to take over the world.
     </string>
-    <string name="detail_vote_average">6.4</string>
-    <string name="detail_release_date">2015-06-17</string>
+    <string name="detail_vote_average">Ratings: 6.4/10.0</string>
+    <string name="detail_release_date">Release Date: 2015-06-17</string>
 
     <!-- Example text for the review list item -->
     <string name="review_author">Andres Gomez</string>
