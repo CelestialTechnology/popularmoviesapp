@@ -13,8 +13,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.alexander.popularmoviesapp.moviedata.DownloadedMovie;
 import com.example.alexander.popularmoviesapp.moviedata.Movie;
+import com.example.alexander.popularmoviesapp.moviedata.OnlineMovie;
 import com.squareup.picasso.Picasso;
 
 /**
@@ -76,6 +79,13 @@ public class MovieDetailActivity extends AppCompatActivity {
 
             if (movieDetailIntent != null && movieDetailIntent.hasExtra("Movie")) {
                 movie = movieDetailIntent.getParcelableExtra("Movie");
+                if (movie instanceof OnlineMovie) {
+                    Toast.makeText(getActivity(), "Online Movie!", Toast.LENGTH_SHORT).show();
+                } else if (movie instanceof DownloadedMovie) {
+                    Toast.makeText(getActivity(), "Downloaded Movie!", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getActivity(), "Correct Movie Class Not Found?", Toast.LENGTH_SHORT).show();
+                }
                 Log.v(LOG_TAG, "MOVIE RECEIVED FOR DETAIL!!!");
                 loadMovieDetails(movie, rootView);
             }
@@ -85,12 +95,17 @@ public class MovieDetailActivity extends AppCompatActivity {
 
         // This helper method loads the movie data to the views in fragment_movie_detail
         public void loadMovieDetails(Movie movie, View rootView) {
+
             // Load Title
             TextView title = (TextView) rootView.findViewById(R.id.detail_movie_title);
             title.setText(movie.getTitle());
             // Load Poster or backdrop
             ImageView poster = (ImageView) rootView.findViewById(R.id.detail_movie_thumbnail);
-            Picasso.with(getContext()).load(movie.getBackgroundImageUrl()).into(poster);
+            if (movie instanceof OnlineMovie) {
+                Picasso.with(getContext()).load(((OnlineMovie) movie).getBackgroundImageUrl()).into(poster);
+            } else {
+                poster.setImageBitmap(((DownloadedMovie) movie).getBackdrop());
+            }
             // Load overview
             TextView overView = (TextView) rootView.findViewById(R.id.detail_movie_synopsis);
             overView.setText(movie.getSynopsis());
@@ -100,6 +115,7 @@ public class MovieDetailActivity extends AppCompatActivity {
             // Load release date
             TextView releaseDate = (TextView) rootView.findViewById(R.id.detail_movie_release_date);
             releaseDate.setText("Release Date: " + movie.getReleaseDate());
+
         }
 
     }

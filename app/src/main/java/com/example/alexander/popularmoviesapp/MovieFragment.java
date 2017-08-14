@@ -16,7 +16,10 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.alexander.popularmoviesapp.jsondata.DownloadMovieJSONTask;
+import com.example.alexander.popularmoviesapp.moviedata.DownloadedMovie;
 import com.example.alexander.popularmoviesapp.moviedata.Movie;
+import com.example.alexander.popularmoviesapp.moviedata.OnlineMovie;
+import com.example.alexander.popularmoviesapp.utils.DbMovieUtil;
 
 import java.util.ArrayList;
 
@@ -86,9 +89,16 @@ public class MovieFragment extends Fragment {
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Movie movie = mMovieAdapter.getItem(position);
-                Intent displayMovieDetail = new Intent(getActivity(), MovieDetailActivity.class)
-                        .putExtra("Movie", movie);
+                Intent displayMovieDetail = new Intent(getActivity(), MovieDetailActivity.class);
+
+                if (DbMovieUtil.isFavoriteMovie(getActivity(), mMovieAdapter.getItem(position))) {
+                    DownloadedMovie downloadedMovie = (DownloadedMovie) mMovieAdapter.getItem(position);
+                    displayMovieDetail.putExtra("Movie", downloadedMovie);
+                } else {
+                    OnlineMovie onlineMovie = (OnlineMovie) mMovieAdapter.getItem(position);
+                    displayMovieDetail.putExtra("Movie", onlineMovie);
+                }
+
                 startActivity(displayMovieDetail);
             }
         });

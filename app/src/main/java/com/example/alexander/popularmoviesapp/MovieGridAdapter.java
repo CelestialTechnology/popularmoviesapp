@@ -7,7 +7,9 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 
+import com.example.alexander.popularmoviesapp.moviedata.DownloadedMovie;
 import com.example.alexander.popularmoviesapp.moviedata.Movie;
+import com.example.alexander.popularmoviesapp.moviedata.OnlineMovie;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -28,12 +30,21 @@ public class MovieGridAdapter extends ArrayAdapter<Movie> {
     public View getView(int position, View convertView, ViewGroup parent) {
         Movie movie = getItem(position);
 
+
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.grid_item_movie_poster, parent, false);
         }
 
         ImageView posterThumbnail = (ImageView) convertView.findViewById(R.id.movie_poster_image);
-        Picasso.with(getContext()).load(movie.getImageUrl()).into(posterThumbnail);
+        if (getItem(position) instanceof OnlineMovie) {
+            Picasso.with(getContext()).load(((OnlineMovie) movie).getImageUrl()).into(posterThumbnail);
+        } else if (getItem(position) instanceof DownloadedMovie) {
+            posterThumbnail.setImageBitmap(((DownloadedMovie) movie).getPoster());
+        } else {
+            throw new UnsupportedClassVersionError(
+                    "Incorrect Version of Movie Class: " + getItem(position).getClass().toString());
+        }
+
 
         return convertView;
     }
