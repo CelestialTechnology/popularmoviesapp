@@ -47,7 +47,7 @@ public class Movie implements Parcelable, JsonDataType {
     // Still not entirely sure what this does, but my theory
     // is that it reads in the object information stored in the
     // parcel when it needs to be accessed?
-    private Movie(Parcel in) {
+    protected Movie(Parcel in) {
         id = in.readString();
         title = in.readString();
         synopsis = in.readString();

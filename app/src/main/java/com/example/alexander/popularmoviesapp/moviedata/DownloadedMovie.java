@@ -1,29 +1,50 @@
 package com.example.alexander.popularmoviesapp.moviedata;
 
 import android.graphics.Bitmap;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 /**
  * Created by awest on 8/13/2017.
  */
 
-public class DownloadedMovie extends Movie {
-    private Bitmap poster;
-    private Bitmap backdrop;
-
+public class DownloadedMovie extends Movie implements Parcelable {
     public DownloadedMovie(String id, String title, String synopsis,
-                           double userRating, String releaseDate,
-                           Bitmap poster, Bitmap backdrop) {
+                           double userRating, String releaseDate) {
         super(id, title, synopsis, userRating, releaseDate);
-
-        this.poster = poster;
-        this.backdrop = backdrop;
     }
 
     public Bitmap getPoster() {
-        return poster;
+        return null;
     }
 
     public Bitmap getBackdrop() {
-        return backdrop;
+        return null;
     }
+
+    private DownloadedMovie(Parcel in) {
+        super(in);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int flags) {
+        super.writeToParcel(parcel, flags);
+    }
+
+    public static final Parcelable.Creator<DownloadedMovie> CREATOR = new Parcelable.Creator<DownloadedMovie>() {
+        @Override
+        public DownloadedMovie createFromParcel(Parcel parcel) {
+            return new DownloadedMovie(parcel);
+        }
+
+        @Override
+        public DownloadedMovie[] newArray(int size) {
+            return new DownloadedMovie[size];
+        }
+    };
 }
