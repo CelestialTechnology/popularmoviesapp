@@ -18,8 +18,7 @@ import java.util.ArrayList;
 public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerViewHolder> {
     private ArrayList<Trailer> trailers;
 
-    public TrailerAdapter(ArrayList<Trailer> trailers) {
-        this.trailers = trailers;
+    public TrailerAdapter() {
     }
 
     @Override
@@ -43,7 +42,11 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerV
 
     @Override
     public int getItemCount() {
-        return 0;
+        return trailers.size();
+    }
+
+    public void loadTrailers(ArrayList<Trailer> newTrailers) {
+        trailers = newTrailers;
     }
 
     class TrailerViewHolder extends RecyclerView.ViewHolder {
