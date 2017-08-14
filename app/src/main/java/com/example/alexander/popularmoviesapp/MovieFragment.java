@@ -13,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.example.alexander.popularmoviesapp.jsondata.DownloadMovieJSONTask;
 import com.example.alexander.popularmoviesapp.moviedata.Movie;
@@ -50,27 +51,32 @@ public class MovieFragment extends Fragment {
             Log.v(LOG_TAG, "Spinner not found!");
         } else {
             Log.v(LOG_TAG, "Spinner Found!");
-        }
-        if (adapter != null) {
-            spinner.setAdapter(adapter);
 
-            spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    if (parent.getItemAtPosition(position).toString().equals("Most Popular")) {
-                        //Toast.makeText(getContext(), parent.getItemAtPosition(position) + " selected", Toast.LENGTH_LONG).show();
-                        downloadMovieData("popular");
+            if (adapter != null) {
+                spinner.setAdapter(adapter);
+
+                spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                        switch (parent.getItemAtPosition(position).toString()) {
+                            case "Most Popular":
+                                downloadMovieData("popular");
+                                break;
+                            case "Top Rated":
+                                downloadMovieData("top_rated");
+                                break;
+                            case "Favorites":
+                                loadFavoriteMovieData();
+                                break;
+                        }
                     }
-                    if (parent.getItemAtPosition(position).toString().equals("Top Rated")) {
-                        downloadMovieData("top_rated");
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+
                     }
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> parent) {
-
-                }
-            });
+                });
+            }
         }
 
         GridView gridView = (GridView) rootView.findViewById(R.id.movies_grid);
@@ -108,6 +114,10 @@ public class MovieFragment extends Fragment {
         downloadMovieJSONTask = new DownloadMovieJSONTask();
         downloadMovieJSONTask.setDownloadAdapter(mMovieAdapter);
         downloadMovieJSONTask.execute(sortCriteria);
+    }
+
+    public void loadFavoriteMovieData() {
+        Toast.makeText(getActivity(), "Favorites Selected!", Toast.LENGTH_SHORT).show();
     }
 
 }
