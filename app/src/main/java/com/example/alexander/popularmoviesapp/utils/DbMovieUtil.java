@@ -3,8 +3,6 @@ package com.example.alexander.popularmoviesapp.utils;
 import android.content.Context;
 import android.database.Cursor;
 
-import com.example.alexander.popularmoviesapp.moviedata.Movie;
-
 import static com.example.alexander.popularmoviesapp.database.TMDBContract.FavoriteMovieEntry.CONTENT_URI;
 
 /**
@@ -13,11 +11,10 @@ import static com.example.alexander.popularmoviesapp.database.TMDBContract.Favor
 
 public class DbMovieUtil {
 
-    public static boolean isFavoriteMovie(Context context, Movie movie) {
-        final String MOVIE_ID = movie.getId();
+    public static boolean isFavoriteMovie(Context context, String movieId) {
         boolean isFavMovie = false;
         Cursor retCur = context.getContentResolver().query(
-                CONTENT_URI.buildUpon().appendPath(MOVIE_ID).build(),
+                CONTENT_URI.buildUpon().appendPath(movieId).build(),
                 null,
                 null,
                 null,
