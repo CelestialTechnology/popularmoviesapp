@@ -11,7 +11,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class TMDBHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "tdmbfavorites.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     public TMDBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -28,9 +28,7 @@ public class TMDBHelper extends SQLiteOpenHelper {
                 TMDBContract.FavoriteMovieEntry.COLUMN_MOVIE_VOTE_AVERAGE + " REAL NOT NULL," +
                 TMDBContract.FavoriteMovieEntry.COLUMN_MOVIE_RELEASE_DATE + " TEXT NOT NULL," +
                 TMDBContract.FavoriteMovieEntry.COLUMN_MOVIE_POSTER + " BLOB NOT NULL," +
-                TMDBContract.FavoriteMovieEntry.COLUMN_MOVIE_POSTER_PATH + " TEXT NOT NULL," +
-                TMDBContract.FavoriteMovieEntry.COLUMN_MOVIE_BACKDROP + " BLOB NOT NULL," +
-                TMDBContract.FavoriteMovieEntry.COLUMN_MOVIE_BACKDROP_PATH + " TEXT NOT NULL" +
+                TMDBContract.FavoriteMovieEntry.COLUMN_MOVIE_BACKDROP + " BLOB NOT NULL" +
                 ");";
         db.execSQL(createTableStatement);
     }
