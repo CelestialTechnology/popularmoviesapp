@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.os.AsyncTask;
 import android.widget.ArrayAdapter;
+import android.widget.Toast;
 
 import com.example.alexander.popularmoviesapp.moviedata.DownloadedMovie;
 import com.example.alexander.popularmoviesapp.moviedata.Movie;
@@ -86,11 +87,13 @@ public class LoadFavoriteMoviesTask extends AsyncTask<Void, Void, ArrayList<Movi
 
     @Override
     protected void onPostExecute(ArrayList<Movie> movies) {
+        mAdapter.clear();
         if (movies != null && movies.size() > 0) {
-            mAdapter.clear();
             for (Movie m : movies) {
                 mAdapter.add(m);
             }
+        } else {
+            Toast.makeText(mContext, "No Favorite Movies!", Toast.LENGTH_SHORT).show();
         }
         super.onPostExecute(movies);
     }
