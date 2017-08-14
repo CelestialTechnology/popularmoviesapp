@@ -1,12 +1,16 @@
 package com.example.alexander.popularmoviesapp.utils;
 
+import android.net.Uri;
 import android.util.Log;
+
+import com.example.alexander.popularmoviesapp.BuildConfig;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 
 /**
@@ -15,8 +19,24 @@ import java.net.URL;
 
 public class NetworkUtility {
     private static final String LOG_TAG = NetworkUtility.class.getSimpleName();
+    private static String API_KEY = BuildConfig.TMDB_API_KEY;
+    private static String TMDB_BASE_URL = "https://api.themoviedb.org/3";
+    private static String SORT_QUERY_PATH = "movie/";
+    private static String API_KEY_PARAM = "api_key";
 
     private NetworkUtility() {
+    }
+
+    public static URL createURL(String query) throws MalformedURLException {
+
+        Uri builtUri;
+
+        builtUri = Uri.parse(TMDB_BASE_URL).buildUpon()
+                .appendEncodedPath(SORT_QUERY_PATH + query)
+                .appendQueryParameter(API_KEY_PARAM, API_KEY)
+                .build();
+
+        return new URL(builtUri.toString());
     }
 
     // Given a URL, establishes an HttpUrlConnection and retrieves
