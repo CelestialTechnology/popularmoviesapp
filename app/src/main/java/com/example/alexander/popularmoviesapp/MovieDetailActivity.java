@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -16,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.alexander.popularmoviesapp.jsondata.DownloadTrailerJSONTask;
 import com.example.alexander.popularmoviesapp.moviedata.DownloadedMovie;
 import com.example.alexander.popularmoviesapp.moviedata.Movie;
 import com.example.alexander.popularmoviesapp.moviedata.OnlineMovie;
@@ -62,6 +65,9 @@ public class MovieDetailActivity extends AppCompatActivity {
     public static class MovieDetailFragment extends Fragment {
         private String LOG_TAG = MovieDetailFragment.class.getSimpleName();
         private Movie movie;
+
+        private TrailerAdapter mTrailerAdapter;
+        private RecyclerView mTrailerView;
 
         public MovieDetailFragment() {
             // Required empty public constructor
@@ -154,6 +160,15 @@ public class MovieDetailActivity extends AppCompatActivity {
             TextView releaseDate = (TextView) rootView.findViewById(R.id.detail_movie_release_date);
             releaseDate.setText("Release Date: " + movie.getReleaseDate());
 
+            loadTrailerDetails(rootView);
+        }
+
+        private void loadTrailerDetails(View rootView) {
+            mTrailerView = (RecyclerView) rootView.findViewById(R.id.rv_trailers);
+            LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+            mTrailerView.setLayoutManager(layoutManager);
+            mTrailerAdapter = new TrailerAdapter();
+            new DownloadTrailerJSONTask(mTrailerView, mTrailerAdapter).execute(movie.getId());
         }
 
     }
