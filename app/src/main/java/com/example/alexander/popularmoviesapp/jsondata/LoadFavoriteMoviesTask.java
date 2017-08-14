@@ -87,8 +87,9 @@ public class LoadFavoriteMoviesTask extends AsyncTask<Void, Void, ArrayList<Movi
 
     @Override
     protected void onPostExecute(ArrayList<Movie> movies) {
-        mAdapter.clear();
+
         if (movies != null && movies.size() > 0) {
+            mAdapter.clear();
             for (Movie m : movies) {
                 mAdapter.add(m);
             }

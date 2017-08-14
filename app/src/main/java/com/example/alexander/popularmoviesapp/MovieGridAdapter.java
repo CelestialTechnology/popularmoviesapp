@@ -39,7 +39,7 @@ public class MovieGridAdapter extends ArrayAdapter<Movie> {
         if (getItem(position) instanceof OnlineMovie) {
             Picasso.with(getContext()).load(((OnlineMovie) movie).getImageUrl()).into(posterThumbnail);
         } else if (getItem(position) instanceof DownloadedMovie) {
-            posterThumbnail.setImageBitmap(((DownloadedMovie) movie).getPoster());
+            posterThumbnail.setImageBitmap(((DownloadedMovie) movie).getPoster(getContext()));
         } else {
             throw new UnsupportedClassVersionError(
                     "Incorrect Version of Movie Class: " + getItem(position).getClass().toString());

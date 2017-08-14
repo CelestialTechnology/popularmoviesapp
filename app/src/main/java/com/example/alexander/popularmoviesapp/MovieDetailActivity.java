@@ -1,6 +1,7 @@
 package com.example.alexander.popularmoviesapp;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -18,6 +19,7 @@ import android.widget.Toast;
 import com.example.alexander.popularmoviesapp.moviedata.DownloadedMovie;
 import com.example.alexander.popularmoviesapp.moviedata.Movie;
 import com.example.alexander.popularmoviesapp.moviedata.OnlineMovie;
+import com.example.alexander.popularmoviesapp.utils.DbMovieUtil;
 import com.squareup.picasso.Picasso;
 
 /**
@@ -94,18 +96,54 @@ public class MovieDetailActivity extends AppCompatActivity {
         }
 
         // This helper method loads the movie data to the views in fragment_movie_detail
-        public void loadMovieDetails(Movie movie, View rootView) {
+        public void loadMovieDetails(final Movie movie, View rootView) {
 
             // Load Title
             TextView title = (TextView) rootView.findViewById(R.id.detail_movie_title);
             title.setText(movie.getTitle());
             // Load Poster or backdrop
             ImageView poster = (ImageView) rootView.findViewById(R.id.detail_movie_thumbnail);
+            final ImageView favoriteButton = (ImageView) rootView.findViewById(R.id.detail_favorite_selection);
             if (movie instanceof OnlineMovie) {
                 Picasso.with(getContext()).load(((OnlineMovie) movie).getBackgroundImageUrl()).into(poster);
-            } else {
-                poster.setImageBitmap(((DownloadedMovie) movie).getBackdrop());
+                favoriteButton.setImageResource(R.mipmap.ic_favorite_star_unselected);
+                favoriteButton.setTag(R.mipmap.ic_favorite_star_unselected);
+            } else if (movie instanceof DownloadedMovie) {
+                poster.setImageBitmap(((DownloadedMovie) movie).getBackdrop(getActivity()));
+                favoriteButton.setImageResource(R.mipmap.ic_favorite_star_selected);
+                favoriteButton.setTag(R.mipmap.ic_favorite_star_selected);
             }
+
+            favoriteButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(final View v) {
+                    new AsyncTask<Void, Void, Boolean>() {
+
+                        @Override
+                        protected Boolean doInBackground(Void... params) {
+                            return new Boolean(DbMovieUtil.changeFavoriteMovieState(getActivity(), movie));
+                        }
+
+                        @Override
+                        protected void onPostExecute(Boolean aBoolean) {
+                            super.onPostExecute(aBoolean);
+                            if (aBoolean.booleanValue()) {
+                                switch (((Integer) v.getTag()).intValue()) {
+                                    case R.mipmap.ic_favorite_star_selected:
+                                        favoriteButton.setImageResource(R.mipmap.ic_favorite_star_unselected);
+                                        favoriteButton.setTag(R.mipmap.ic_favorite_star_unselected);
+                                        break;
+                                    case R.mipmap.ic_favorite_star_unselected:
+                                        favoriteButton.setImageResource(R.mipmap.ic_favorite_star_selected);
+                                        favoriteButton.setTag(R.mipmap.ic_favorite_star_selected);
+                                        break;
+                                }
+                            }
+                        }
+                    }.execute();
+                }
+            });
+
             // Load overview
             TextView overView = (TextView) rootView.findViewById(R.id.detail_movie_synopsis);
             overView.setText(movie.getSynopsis());
