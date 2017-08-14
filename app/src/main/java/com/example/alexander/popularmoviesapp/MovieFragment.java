@@ -13,9 +13,9 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import com.example.alexander.popularmoviesapp.jsondata.DownloadMovieJSONTask;
+import com.example.alexander.popularmoviesapp.jsondata.LoadFavoriteMoviesTask;
 import com.example.alexander.popularmoviesapp.moviedata.DownloadedMovie;
 import com.example.alexander.popularmoviesapp.moviedata.Movie;
 import com.example.alexander.popularmoviesapp.moviedata.OnlineMovie;
@@ -30,9 +30,10 @@ import java.util.ArrayList;
 public class MovieFragment extends Fragment {
 
     private DownloadMovieJSONTask downloadMovieJSONTask;
+    private LoadFavoriteMoviesTask loadFavoriteMoviesTask;
     private MovieGridAdapter mMovieAdapter;
-    Spinner spinner;
-    ArrayAdapter<CharSequence> adapter;
+    private Spinner spinner;
+    private ArrayAdapter<CharSequence> adapter;
     private String LOG_TAG = MovieFragment.class.getSimpleName();
 
 
@@ -126,7 +127,8 @@ public class MovieFragment extends Fragment {
     }
 
     public void loadFavoriteMovieData() {
-        Toast.makeText(getActivity(), "Favorites Selected!", Toast.LENGTH_SHORT).show();
+        loadFavoriteMoviesTask = new LoadFavoriteMoviesTask(mMovieAdapter, getActivity());
+        loadFavoriteMoviesTask.execute();
     }
 
 }

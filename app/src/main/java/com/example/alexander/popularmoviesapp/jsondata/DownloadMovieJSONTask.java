@@ -39,7 +39,6 @@ public class DownloadMovieJSONTask extends AsyncTask<String, Void, ArrayList<Mov
     @Override
     protected void onPostExecute(ArrayList<Movie> result) {
         if (result != null && adapter != null) {
-            Log.d(LOG_TAG, "SOMETHING");
             adapter.clear();
             for (Movie m : result) {
 
