@@ -1,10 +1,14 @@
 package com.example.alexander.popularmoviesapp.jsondata;
 
+import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
 
 import com.example.alexander.popularmoviesapp.BuildConfig;
+import com.example.alexander.popularmoviesapp.moviedata.DownloadedMovie;
 import com.example.alexander.popularmoviesapp.moviedata.Movie;
+import com.example.alexander.popularmoviesapp.moviedata.OnlineMovie;
+import com.example.alexander.popularmoviesapp.utils.DbMovieUtil;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -46,16 +50,16 @@ public class TMDBJsonParser {
     }
 
 
-    public static ArrayList<Movie> parseDownloadedJSON(String rawData) throws JSONException {
+    public static ArrayList<Movie> parseDownloadedJSON(String rawData, Context context) throws JSONException {
         final String TMDB_RESULTS = "results";
 
         JSONObject rawDataJson = new JSONObject(rawData);
         JSONArray rawDataArray = rawDataJson.getJSONArray(TMDB_RESULTS);
 
-        return extractDesiredFields(rawDataArray);
+        return extractDesiredFields(rawDataArray, context);
     }
 
-    private static ArrayList<Movie> extractDesiredFields(JSONArray resultsArray) {
+    private static ArrayList<Movie> extractDesiredFields(JSONArray resultsArray, Context context) {
 
         final String TMDB_ID = "id";
         final String TMDB_TITLE = "title";
@@ -66,21 +70,35 @@ public class TMDBJsonParser {
         final String TMDB_RELEASE_DATE = "release_date";
 
         ArrayList<Movie> movies = new ArrayList<Movie>();
-
+        boolean isAlreadyDownloadedMovie;
+        Movie movie;
         try {
             for (int i = 0; i < resultsArray.length(); i++) {
 
                 JSONObject currentMovie = resultsArray.getJSONObject(i);
 
-                movies.add(new Movie(
-                        currentMovie.getString(TMDB_ID),
-                        currentMovie.getString(TMDB_TITLE),
-                        currentMovie.getString(TMDB_POSTER_PATH),
-                        currentMovie.getString(TMDB_BACKDROP_PATH),
-                        currentMovie.getString(TMDB_OVERVIEW),
-                        currentMovie.getDouble(TMDB_VOTE_AVERAGE),
-                        currentMovie.getString(TMDB_RELEASE_DATE)
-                ));
+                isAlreadyDownloadedMovie = DbMovieUtil.isFavoriteMovie(context, currentMovie.getString(TMDB_ID));
+
+                if (isAlreadyDownloadedMovie) {
+                    movie = new DownloadedMovie(
+                            currentMovie.getString(TMDB_ID),
+                            currentMovie.getString(TMDB_TITLE),
+                            currentMovie.getString(TMDB_OVERVIEW),
+                            currentMovie.getDouble(TMDB_VOTE_AVERAGE),
+                            currentMovie.getString(TMDB_RELEASE_DATE)
+                    );
+                } else {
+                    movie = new OnlineMovie(
+                            currentMovie.getString(TMDB_ID),
+                            currentMovie.getString(TMDB_TITLE),
+                            currentMovie.getString(TMDB_POSTER_PATH),
+                            currentMovie.getString(TMDB_BACKDROP_PATH),
+                            currentMovie.getString(TMDB_OVERVIEW),
+                            currentMovie.getDouble(TMDB_VOTE_AVERAGE),
+                            currentMovie.getString(TMDB_RELEASE_DATE)
+                    );
+                }
+                movies.add(movie);
             }
         } catch (JSONException e) {
             Log.v(LOG_TAG, "Error Parsing Data! @extractDesiredFields()");
