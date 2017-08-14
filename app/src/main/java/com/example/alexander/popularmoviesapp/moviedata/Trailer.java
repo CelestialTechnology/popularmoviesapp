@@ -31,4 +31,12 @@ public class Trailer implements JsonDataType {
     public String getJsonDataType() {
         return "Trailer";
     }
+
+    @Override
+    public String toString() {
+        return "Trailer - " +
+                "name: " + name + " " +
+                "key: " + urlKey + " " +
+                "type: " + type;
+    }
 }

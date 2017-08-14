@@ -25,4 +25,11 @@ public class Review implements JsonDataType {
     public String getJsonDataType() {
         return "Review";
     }
+
+    @Override
+    public String toString() {
+        return "Review - " +
+                "Author: " + author + " " +
+                "Content: " + content;
+    }
 }
