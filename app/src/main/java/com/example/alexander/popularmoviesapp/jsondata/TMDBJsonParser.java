@@ -6,6 +6,7 @@ import android.util.Log;
 import com.example.alexander.popularmoviesapp.moviedata.DownloadedMovie;
 import com.example.alexander.popularmoviesapp.moviedata.Movie;
 import com.example.alexander.popularmoviesapp.moviedata.OnlineMovie;
+import com.example.alexander.popularmoviesapp.moviedata.Review;
 import com.example.alexander.popularmoviesapp.moviedata.Trailer;
 import com.example.alexander.popularmoviesapp.utils.DbMovieUtil;
 
@@ -37,6 +38,37 @@ public class TMDBJsonParser {
         JSONArray rawDataArray = rawDataJson.getJSONArray(TMDB_RESULTS);
 
         return extractDesiredMovieFields(rawDataArray, context);
+    }
+
+    public static ArrayList<Review> parseDownloadedReviewJSON(String rawData) throws JSONException {
+        final String TMDB_RESULTS = "results";
+
+        JSONObject rawDataJson = new JSONObject(rawData);
+        JSONArray rawDataArray = rawDataJson.getJSONArray(TMDB_RESULTS);
+
+        return extractDesiredReviewFields(rawDataArray);
+    }
+
+    private static ArrayList<Review> extractDesiredReviewFields(JSONArray resultArray) {
+        final String TMDB_REVIEW_AUTHOR = "author";
+        final String TMDB_REVIEW_CONTENT = "content";
+
+        ArrayList<Review> reviews = new ArrayList<>();
+        try {
+            for (int i = 0; i < resultArray.length(); i++) {
+                JSONObject currentReview = resultArray.getJSONObject(i);
+
+                reviews.add(new Review(
+                        currentReview.getString(TMDB_REVIEW_AUTHOR),
+                        currentReview.getString(TMDB_REVIEW_CONTENT)
+                ));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        return reviews;
     }
 
     public static ArrayList<Trailer> parseDownloadedTrailerJSON(String rawData) throws JSONException {
@@ -122,4 +154,6 @@ public class TMDBJsonParser {
         }
         return movies;
     }
+
+
 }
