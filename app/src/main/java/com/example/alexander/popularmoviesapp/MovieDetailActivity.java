@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.alexander.popularmoviesapp.jsondata.DownloadReviewJSONTask;
 import com.example.alexander.popularmoviesapp.jsondata.DownloadTrailerJSONTask;
 import com.example.alexander.popularmoviesapp.moviedata.DownloadedMovie;
 import com.example.alexander.popularmoviesapp.moviedata.Movie;
@@ -63,11 +64,14 @@ public class MovieDetailActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public static class MovieDetailFragment extends Fragment implements TrailerAdapter.TrailerListItemClickListener {
+    public static class MovieDetailFragment extends Fragment implements TrailerAdapter.TrailerListItemClickListener,
+            ReviewAdapter.ReviewListItemClickListener {
         private String LOG_TAG = MovieDetailFragment.class.getSimpleName();
         private Movie movie;
 
         private TrailerAdapter mTrailerAdapter;
+        private ReviewAdapter mReviewAdapter;
+        private RecyclerView mReviewView;
         private RecyclerView mTrailerView;
 
         public MovieDetailFragment() {
@@ -162,6 +166,15 @@ public class MovieDetailActivity extends AppCompatActivity {
             releaseDate.setText("Release Date: " + movie.getReleaseDate());
 
             loadTrailerDetails(rootView);
+            loadReviewDetails(rootView);
+        }
+
+        private void loadReviewDetails(View rootView) {
+            mReviewView = (RecyclerView) rootView.findViewById(R.id.rv_reviews);
+            LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+            mReviewView.setLayoutManager(layoutManager);
+            mReviewAdapter = new ReviewAdapter(this);
+            new DownloadReviewJSONTask(mReviewView, mReviewAdapter).execute(movie.getId());
         }
 
         private void loadTrailerDetails(View rootView) {
@@ -177,6 +190,11 @@ public class MovieDetailActivity extends AppCompatActivity {
             String videoKey = mTrailerAdapter.getTrailers().get(clickedTrailerIndex).getUrlKey();
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube://" + videoKey));
             startActivity(intent);
+        }
+
+        @Override
+        public void onReviewItemClick(int clickedReviewIndex) {
+            // TODO: Find an idea for the reviews
         }
     }
 

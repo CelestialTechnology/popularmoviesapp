@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?><!-- TODO: Place all dimensions into the dimensions file -->
+
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -74,21 +75,34 @@
         app:layout_constraintTop_toBottomOf="@+id/detail_movie_user_rating"
         tools:text="@string/detail_release_date" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_trailers"
+    <FrameLayout
+        android:id="@+id/reviews_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="0dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/detail_movie_release_date" />
+        app:layout_constraintTop_toBottomOf="@+id/trailers_container">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_reviews"
-        android:layout_width="368dp"
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_reviews"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            tools:listitem="@layout/review_list_item" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/trailers_container"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rv_trailers" />
+        app:layout_constraintTop_toBottomOf="@+id/detail_movie_release_date">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_trailers"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            tools:listitem="@layout/trailer_list_item" />
+    </FrameLayout>
 
 </android.support.constraint.ConstraintLayout>

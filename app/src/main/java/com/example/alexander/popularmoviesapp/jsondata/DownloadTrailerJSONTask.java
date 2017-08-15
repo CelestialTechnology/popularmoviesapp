@@ -43,10 +43,6 @@ public class DownloadTrailerJSONTask extends AsyncTask<String, Void, ArrayList<T
     protected void onPostExecute(ArrayList<Trailer> trailers) {
         super.onPostExecute(trailers);
         if (trailers != null && trailers.size() > 0) {
-            Log.i(LOG_TAG, "Trailers available!");
-            for (Trailer t : trailers) {
-                Log.i(LOG_TAG, t.toString());
-            }
             mAdapter.loadTrailers(trailers);
             recyclerView.setAdapter(mAdapter);
         }
