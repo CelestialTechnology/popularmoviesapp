@@ -1,6 +1,7 @@
 package com.example.alexander.popularmoviesapp;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -62,7 +63,7 @@ public class MovieDetailActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public static class MovieDetailFragment extends Fragment {
+    public static class MovieDetailFragment extends Fragment implements TrailerAdapter.TrailerListItemClickListener {
         private String LOG_TAG = MovieDetailFragment.class.getSimpleName();
         private Movie movie;
 
@@ -167,10 +168,16 @@ public class MovieDetailActivity extends AppCompatActivity {
             mTrailerView = (RecyclerView) rootView.findViewById(R.id.rv_trailers);
             LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
             mTrailerView.setLayoutManager(layoutManager);
-            mTrailerAdapter = new TrailerAdapter();
+            mTrailerAdapter = new TrailerAdapter(this);
             new DownloadTrailerJSONTask(mTrailerView, mTrailerAdapter).execute(movie.getId());
         }
 
+        @Override
+        public void onTrailerItemClick(int clickedTrailerIndex) {
+            String videoKey = mTrailerAdapter.getTrailers().get(clickedTrailerIndex).getUrlKey();
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube://" + videoKey));
+            startActivity(intent);
+        }
     }
 
 

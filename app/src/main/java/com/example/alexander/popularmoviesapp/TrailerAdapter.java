@@ -17,8 +17,10 @@ import java.util.ArrayList;
 
 public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerViewHolder> {
     private ArrayList<Trailer> trailers;
+    final private TrailerListItemClickListener mTrailerListItemClickListener;
 
-    public TrailerAdapter() {
+    public TrailerAdapter(TrailerListItemClickListener clickListener) {
+        mTrailerListItemClickListener = clickListener;
     }
 
     @Override
@@ -45,20 +47,35 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerV
         return trailers.size();
     }
 
+    public interface TrailerListItemClickListener {
+        void onTrailerItemClick(int clickedTrailerIndex);
+    }
+
     public void loadTrailers(ArrayList<Trailer> newTrailers) {
         trailers = newTrailers;
     }
 
-    class TrailerViewHolder extends RecyclerView.ViewHolder {
+    public ArrayList<Trailer> getTrailers() {
+        return trailers;
+    }
+
+    class TrailerViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView trailerName;
 
         public TrailerViewHolder(View itemView) {
             super(itemView);
             trailerName = (TextView) itemView.findViewById(R.id.textViewName);
+            itemView.setOnClickListener(this);
         }
 
         void bind(Trailer trailer) {
             trailerName.setText(trailer.getName());
+        }
+
+        @Override
+        public void onClick(View v) {
+            int clickedTrailer = getAdapterPosition();
+            mTrailerListItemClickListener.onTrailerItemClick(clickedTrailer);
         }
     }
 }
