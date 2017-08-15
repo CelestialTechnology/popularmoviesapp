@@ -41,6 +41,10 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
         holder.bind(reviews.get(position));
     }
 
+    public void loadReviews(ArrayList<Review> newReviews) {
+        this.reviews = newReviews;
+    }
+
     @Override
     public int getItemCount() {
         return reviews.size();
