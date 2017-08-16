@@ -6,8 +6,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
 public class MainActivity extends AppCompatActivity {
-    Spinner spinner;
-    ArrayAdapter<CharSequence> adapter;
+    private Spinner spinner;
+    private ArrayAdapter<CharSequence> adapter;
     private String LOG_TAG = MainActivity.class.getSimpleName();
 
     @Override

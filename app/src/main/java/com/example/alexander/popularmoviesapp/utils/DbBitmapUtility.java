@@ -9,8 +9,13 @@ import java.io.ByteArrayOutputStream;
  * Created by awest on 8/11/2017.
  */
 
-public class DbBitmapUtility {
+public final class DbBitmapUtility {
+    private final String LOG_TAG = DbBitmapUtility.class.getSimpleName();
 
+    // Suppress default constructor for non-instantiability
+    private DbBitmapUtility() {
+        throw new AssertionError("The " + LOG_TAG + " class will not be instantiated or extended.");
+    }
     // convert from bitmap to byte array
     public static byte[] getBytes(Bitmap bitmap) {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();

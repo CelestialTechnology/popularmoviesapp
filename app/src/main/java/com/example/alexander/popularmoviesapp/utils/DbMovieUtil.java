@@ -27,7 +27,13 @@ import static com.example.alexander.popularmoviesapp.database.TMDBContract.Favor
  * Created by awest on 8/14/2017.
  */
 
-public class DbMovieUtil {
+public final class DbMovieUtil {
+    private final String LOG_TAG = DbMovieUtil.class.getSimpleName();
+
+    // Suppress default constructor for non-instantiability
+    private DbMovieUtil() {
+        throw new AssertionError("The " + LOG_TAG + " class will not be instantiated or extended.");
+    }
 
     public static boolean isFavoriteMovie(Context context, String movieId) {
         boolean isFavMovie = false;

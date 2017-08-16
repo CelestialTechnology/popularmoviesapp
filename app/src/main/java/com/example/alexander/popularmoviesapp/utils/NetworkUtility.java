@@ -17,14 +17,16 @@ import java.net.URL;
  * Created by awest on 8/11/2017.
  */
 
-public class NetworkUtility {
+public final class NetworkUtility {
     private static final String LOG_TAG = NetworkUtility.class.getSimpleName();
     private static String API_KEY = BuildConfig.TMDB_API_KEY;
     private static String TMDB_BASE_URL = "https://api.themoviedb.org/3";
     private static String SORT_QUERY_PATH = "movie/";
     private static String API_KEY_PARAM = "api_key";
 
+    // Suppress default constructor for non-instantiability
     private NetworkUtility() {
+        throw new AssertionError("The " + LOG_TAG + " class will not be instantiated or extended.");
     }
 
     public static URL createURL(String query) throws MalformedURLException {

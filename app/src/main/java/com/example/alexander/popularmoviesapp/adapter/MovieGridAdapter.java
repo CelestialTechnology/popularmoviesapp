@@ -30,27 +30,30 @@ public class MovieGridAdapter extends ArrayAdapter<Movie> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         Movie movie = getItem(position);
-
+        MovieViewHolder movieViewHolder;
 
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.grid_item_movie_poster, parent, false);
+            movieViewHolder = new MovieViewHolder();
+            movieViewHolder.posterThumbnail = (ImageView) convertView.findViewById(R.id.movie_poster_image);
+            convertView.setTag(movieViewHolder);
+        } else {
+            movieViewHolder = (MovieViewHolder) convertView.getTag();
         }
 
-        ImageView posterThumbnail = (ImageView) convertView.findViewById(R.id.movie_poster_image);
         if (getItem(position) instanceof OnlineMovie) {
-            Picasso.with(getContext()).load(((OnlineMovie) movie).getImageUrl()).into(posterThumbnail);
+            Picasso.with(getContext()).load(((OnlineMovie) movie).getImageUrl()).into(movieViewHolder.posterThumbnail);
         } else if (getItem(position) instanceof DownloadedMovie) {
-            posterThumbnail.setImageBitmap(((DownloadedMovie) movie).getPoster(getContext()));
+            movieViewHolder.posterThumbnail.setImageBitmap(((DownloadedMovie) movie).getPoster(getContext()));
         } else {
             throw new UnsupportedClassVersionError(
                     "Incorrect Version of Movie Class: " + getItem(position).getClass().toString());
         }
 
-
         return convertView;
     }
 
-    public ArrayList<Movie> getMovies() {
-        return mMovies;
+    private class MovieViewHolder {
+        ImageView posterThumbnail;
     }
 }
