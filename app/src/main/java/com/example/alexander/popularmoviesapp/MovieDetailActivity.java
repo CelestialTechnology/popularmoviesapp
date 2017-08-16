@@ -21,6 +21,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.alexander.popularmoviesapp.adapter.ReviewAdapter;
+import com.example.alexander.popularmoviesapp.adapter.TrailerAdapter;
 import com.example.alexander.popularmoviesapp.jsondata.DownloadReviewJSONTask;
 import com.example.alexander.popularmoviesapp.jsondata.DownloadTrailerJSONTask;
 import com.example.alexander.popularmoviesapp.moviedata.DownloadedMovie;

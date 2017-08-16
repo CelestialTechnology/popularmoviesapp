@@ -4,7 +4,7 @@ import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
-import com.example.alexander.popularmoviesapp.ReviewAdapter;
+import com.example.alexander.popularmoviesapp.adapter.ReviewAdapter;
 import com.example.alexander.popularmoviesapp.moviedata.Review;
 import com.example.alexander.popularmoviesapp.utils.NetworkUtility;
 
