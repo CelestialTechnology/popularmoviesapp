@@ -17,6 +17,7 @@ import android.widget.GridView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.alexander.popularmoviesapp.adapter.MovieGridAdapter;
 import com.example.alexander.popularmoviesapp.jsondata.DownloadMovieJSONTask;
 import com.example.alexander.popularmoviesapp.jsondata.LoadFavoriteMoviesTask;
 import com.example.alexander.popularmoviesapp.moviedata.DownloadedMovie;
@@ -40,7 +41,7 @@ public class MovieFragment extends Fragment {
     private Spinner spinner;
     private ArrayAdapter<CharSequence> adapter;
     private String LOG_TAG = MovieFragment.class.getSimpleName();
-
+    private GridView mMovieGrid;
 
     public MovieFragment() {
         // Required empty public constructor
@@ -99,11 +100,11 @@ public class MovieFragment extends Fragment {
                 });
             }
         }
-        GridView gridView = (GridView) rootView.findViewById(R.id.movies_grid);
+        mMovieGrid = (GridView) rootView.findViewById(R.id.movies_grid);
         mMovieAdapter = new MovieGridAdapter(getActivity(), new ArrayList<Movie>());
-        gridView.setAdapter(mMovieAdapter);
+        mMovieGrid.setAdapter(mMovieAdapter);
 
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        mMovieGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent displayMovieDetail = new Intent(getActivity(), MovieDetailActivity.class);
@@ -119,7 +120,17 @@ public class MovieFragment extends Fragment {
                 startActivity(displayMovieDetail);
             }
         });
+        if (savedInstanceState != null) {
+            int previousGridPosition = savedInstanceState.getInt("GridPosition");
+            mMovieGrid.setSelection(previousGridPosition);
+        }
         return rootView;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt("GridPosition", mMovieGrid.getFirstVisiblePosition());
     }
 
     private boolean isConnectedToWifi() {
