@@ -1,6 +1,8 @@
 package com.example.alexander.popularmoviesapp;
 
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -93,11 +95,11 @@ public class MovieDetailActivity extends AppCompatActivity {
             if (movieDetailIntent != null && movieDetailIntent.hasExtra("Movie")) {
                 movie = movieDetailIntent.getParcelableExtra("Movie");
                 if (movie instanceof OnlineMovie) {
-                    Toast.makeText(getActivity(), "Online Movie!", Toast.LENGTH_SHORT).show();
+                    Log.i(LOG_TAG, "Online Movie!");
                 } else if (movie instanceof DownloadedMovie) {
-                    Toast.makeText(getActivity(), "Downloaded Movie!", Toast.LENGTH_SHORT).show();
+                    Log.i(LOG_TAG, "Downloaded Movie!");
                 } else {
-                    Toast.makeText(getActivity(), "Correct Movie Class Not Found?", Toast.LENGTH_SHORT).show();
+                    Log.i(LOG_TAG, "Correct Movie Class Not Found?");
                 }
                 Log.v(LOG_TAG, "MOVIE RECEIVED FOR DETAIL!!!");
                 loadMovieDetails(movie, rootView);
@@ -165,8 +167,28 @@ public class MovieDetailActivity extends AppCompatActivity {
             TextView releaseDate = (TextView) rootView.findViewById(R.id.detail_movie_release_date);
             releaseDate.setText("Release Date: " + movie.getReleaseDate());
 
-            loadTrailerDetails(rootView);
-            loadReviewDetails(rootView);
+            // This is only done if there is network connectivity
+            if (isConnectedToWifi()) {
+                loadTrailerDetails(rootView);
+                loadReviewDetails(rootView);
+            } else {
+                Toast.makeText(getActivity(), "Not connected to Wifi. Trailers and Reviews not loaded.", Toast.LENGTH_LONG).show();
+            }
+        }
+
+        private boolean isConnectedToWifi() {
+            ConnectivityManager cm =
+                    (ConnectivityManager) getActivity().getSystemService(CONNECTIVITY_SERVICE);
+
+            NetworkInfo networkInfo = cm.getActiveNetworkInfo();
+            boolean isConnectedToNetwork = networkInfo != null && networkInfo.isConnectedOrConnecting();
+            if (isConnectedToNetwork) {
+                boolean isConnectionWifi = networkInfo.getType() == ConnectivityManager.TYPE_WIFI;
+                if (isConnectionWifi) {
+                    return true;
+                }
+            }
+            return false;
         }
 
         private void loadReviewDetails(View rootView) {

@@ -2,6 +2,8 @@ package com.example.alexander.popularmoviesapp;
 
 
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -13,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.example.alexander.popularmoviesapp.jsondata.DownloadMovieJSONTask;
 import com.example.alexander.popularmoviesapp.jsondata.LoadFavoriteMoviesTask;
@@ -22,6 +25,8 @@ import com.example.alexander.popularmoviesapp.moviedata.OnlineMovie;
 import com.example.alexander.popularmoviesapp.utils.DbMovieUtil;
 
 import java.util.ArrayList;
+
+import static android.content.Context.CONNECTIVITY_SERVICE;
 
 
 /**
@@ -64,12 +69,24 @@ public class MovieFragment extends Fragment {
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                         switch (parent.getItemAtPosition(position).toString()) {
                             case "Most Popular":
-                                downloadMovieData("popular");
+                                if (isConnectedToWifi()) {
+                                    downloadMovieData("popular");
+                                } else {
+                                    spinner.setSelection(2);
+                                }
                                 break;
                             case "Top Rated":
-                                downloadMovieData("top_rated");
+                                if (isConnectedToWifi()) {
+                                    downloadMovieData("top_rated");
+                                } else {
+                                    spinner.setSelection(2);
+                                }
                                 break;
                             case "Favorites":
+                                if (!isConnectedToWifi()) {
+                                    Toast.makeText(getActivity(), "No Wi-fi Connection, Showing Favorites Only", Toast.LENGTH_LONG).show();
+                                }
+
                                 loadFavoriteMovieData();
                                 break;
                         }
@@ -82,7 +99,6 @@ public class MovieFragment extends Fragment {
                 });
             }
         }
-
         GridView gridView = (GridView) rootView.findViewById(R.id.movies_grid);
         mMovieAdapter = new MovieGridAdapter(getActivity(), new ArrayList<Movie>());
         gridView.setAdapter(mMovieAdapter);
@@ -106,6 +122,20 @@ public class MovieFragment extends Fragment {
         return rootView;
     }
 
+    private boolean isConnectedToWifi() {
+        ConnectivityManager cm =
+                (ConnectivityManager) getActivity().getSystemService(CONNECTIVITY_SERVICE);
+
+        NetworkInfo networkInfo = cm.getActiveNetworkInfo();
+        boolean isConnectedToNetwork = networkInfo != null && networkInfo.isConnectedOrConnecting();
+        if (isConnectedToNetwork) {
+            boolean isConnectionWifi = networkInfo.getType() == ConnectivityManager.TYPE_WIFI;
+            if (isConnectionWifi) {
+                return true;
+            }
+        }
+        return false;
+    }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
