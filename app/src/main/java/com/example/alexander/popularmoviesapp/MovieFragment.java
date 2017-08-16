@@ -84,7 +84,7 @@ public class MovieFragment extends Fragment {
                                 break;
                             case "Favorites":
                                 if (!isConnectedToWifi()) {
-                                    Toast.makeText(getActivity(), "No Wi-fi Connection, Showing Favorites Only", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(getActivity(), "No connection to network, Showing Favorites Only", Toast.LENGTH_LONG).show();
                                 }
 
                                 loadFavoriteMovieData();
@@ -129,10 +129,7 @@ public class MovieFragment extends Fragment {
         NetworkInfo networkInfo = cm.getActiveNetworkInfo();
         boolean isConnectedToNetwork = networkInfo != null && networkInfo.isConnectedOrConnecting();
         if (isConnectedToNetwork) {
-            boolean isConnectionWifi = networkInfo.getType() == ConnectivityManager.TYPE_WIFI;
-            if (isConnectionWifi) {
                 return true;
-            }
         }
         return false;
     }

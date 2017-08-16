@@ -172,7 +172,7 @@ public class MovieDetailActivity extends AppCompatActivity {
                 loadTrailerDetails(rootView);
                 loadReviewDetails(rootView);
             } else {
-                Toast.makeText(getActivity(), "Not connected to Wifi. Trailers and Reviews not loaded.", Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), "Not connected to Network. Trailers and Reviews not loaded.", Toast.LENGTH_LONG).show();
             }
         }
 
@@ -183,10 +183,7 @@ public class MovieDetailActivity extends AppCompatActivity {
             NetworkInfo networkInfo = cm.getActiveNetworkInfo();
             boolean isConnectedToNetwork = networkInfo != null && networkInfo.isConnectedOrConnecting();
             if (isConnectedToNetwork) {
-                boolean isConnectionWifi = networkInfo.getType() == ConnectivityManager.TYPE_WIFI;
-                if (isConnectionWifi) {
                     return true;
-                }
             }
             return false;
         }
