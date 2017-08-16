@@ -1,4 +1,4 @@
-package com.example.alexander.popularmoviesapp;
+package com.example.alexander.popularmoviesapp.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 
+import com.example.alexander.popularmoviesapp.R;
 import com.example.alexander.popularmoviesapp.moviedata.DownloadedMovie;
 import com.example.alexander.popularmoviesapp.moviedata.Movie;
 import com.example.alexander.popularmoviesapp.moviedata.OnlineMovie;
