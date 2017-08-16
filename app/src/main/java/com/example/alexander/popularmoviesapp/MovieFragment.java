@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -120,17 +121,24 @@ public class MovieFragment extends Fragment {
                 startActivity(displayMovieDetail);
             }
         });
-        if (savedInstanceState != null) {
-            int previousGridPosition = savedInstanceState.getInt("GridPosition");
-            mMovieGrid.setSelection(previousGridPosition);
-        }
+
         return rootView;
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putInt("GridPosition", mMovieGrid.getFirstVisiblePosition());
+        outState.putInt("GridPosition", mMovieGrid.getLastVisiblePosition());
+    }
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+
+        if (savedInstanceState != null) {
+            int previousGridPosition = savedInstanceState.getInt("GridPosition");
+            mMovieGrid.setSelection(previousGridPosition);
+        }
     }
 
     private boolean isConnectedToWifi() {
